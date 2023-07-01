@@ -8,7 +8,7 @@ class IBehaviour;
 
 class Agent {
 public:
-    float _maxSpeed{50.0f};
+    float _maxSpeed{ 100.0f };
     Vector2 _acceleration;
     Rigidbody* object;
 
@@ -17,11 +17,10 @@ public:
 
     virtual ~Agent() {};
 
-    // update the agent and its behaviours
-    virtual void Update(float deltaTime);
     
+    virtual void Update(float deltaTime);
+   
     virtual void Draw();
-
     // add a behaviour to the agent
     void AddBehaviour(IBehaviour* behaviour);
 
@@ -29,8 +28,8 @@ public:
     Vector2 GetPosition();
 
 private:
-    float _radius {5.0f};
-    Color _colour{ BLUE };
+    float _radius{ 5.0f };
+    Color _colour{ PURPLE };
 
     std::list<IBehaviour*> _behaviours;
 };
