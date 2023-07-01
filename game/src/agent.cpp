@@ -37,7 +37,7 @@ void Agent::Update(float deltaTime)
     object->_velocity.x += _acceleration.x;
     object->_velocity.y += _acceleration.y;
 
-    // check if the magitude of the velocity
+   
     if (Vector2Length(object->_velocity) > _maxSpeed)
     {
         object->_velocity = Vector2Scale(Vector2Normalize(object->_velocity), _maxSpeed);
@@ -51,7 +51,7 @@ void Agent::Update(float deltaTime)
 
 void Agent::Draw()
 {
-    // draw the ball of the agent with the position values
+    
     DrawCircleV(object->_position, _radius, _colour);
 }
 
