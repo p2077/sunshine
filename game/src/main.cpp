@@ -1,4 +1,4 @@
-#include "rlImGui.h"
+/*#include "rlImGui.h"
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
 
@@ -18,3 +18,4 @@ int main(void)
     CloseWindow();
     return 0;
 }
+*/
