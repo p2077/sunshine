@@ -1,8 +1,9 @@
 #include <iostream>
-#include <vector>
 #include "raylib.h"
+#include <vector>
 
-const int TILE_SIZE = 46; 
+
+const int TILE_SIZE = 46;
 
 enum class TileType
 {
@@ -13,7 +14,7 @@ enum class TileType
 struct Tile
 {
     TileType type;
-    std::vector<int> adjacencyList; 
+    std::vector<int> adjacencyRecord;
 };
 
 class Tilemap
@@ -29,7 +30,7 @@ public:
         return tiles[b * width + a];
     }
 
-int getHeight() const
+    int getHeight() const
     {
         return height;
     }
@@ -60,34 +61,34 @@ int getHeight() const
                 Tile& tile = getTile(a, b);
                 if (tile.type == TileType::Wall)
                 {
-                    tile.adjacencyList.clear(); 
+                    tile.adjacencyRecord.clear();
                 }
             }
         }
     }
 
-    void createAdjacencyList()
+    void createAdjacencyRecord()
     {
         for (int b = 0; b < height; ++b)
         {
             for (int a = 0; a < width; ++a)
             {
                 Tile& tile = getTile(a, b);
-                tile.adjacencyList.clear();
+                tile.adjacencyRecord.clear();
 
                 if (tile.type == TileType::Floor)
                 {
                     if (b > 0 && getTile(a, b - 1).type == TileType::Floor)
-                        tile.adjacencyList.push_back((b - 1) * width + a);
+                        tile.adjacencyRecord.push_back((b - 1) * width + a);
 
                     if (b < height - 1 && getTile(a, b + 1).type == TileType::Floor)
-                        tile.adjacencyList.push_back((b + 1) * width + a);
+                        tile.adjacencyRecord.push_back((b + 1) * width + a);
 
                     if (a > 0 && getTile(a - 1, b).type == TileType::Floor)
-                        tile.adjacencyList.push_back(b * width + (a - 1));
+                        tile.adjacencyRecord.push_back(b * width + (a - 1));
 
                     if (a < width - 1 && getTile(a + 1, b).type == TileType::Floor)
-                        tile.adjacencyList.push_back(b * width + (a + 1));
+                        tile.adjacencyRecord.push_back(b * width + (a + 1));
                 }
             }
         }
@@ -123,13 +124,13 @@ int getHeight() const
 
                 DrawRectangleLinesEx(rect, 1, RED);
 
-                
+
                 if (tile.type == TileType::Floor)
                 {
                     Vector2 center = { (rect.x + rect.width / 2), (rect.y + rect.height / 2) };
                     DrawCircle(center.x, center.y, 5, GREEN);
 
-                    for (int adjTileIndex : tile.adjacencyList)
+                    for (int adjTileIndex : tile.adjacencyRecord)
                     {
                         Tile& adjTile = tiles[adjTileIndex];
                         Rectangle adjRect{ adjTileIndex % width * TILE_SIZE, adjTileIndex / width * TILE_SIZE, TILE_SIZE, TILE_SIZE };
@@ -156,16 +157,16 @@ int main()
     Tilemap tilemap(20, 15);
     tilemap.generateRandomLevel();
     tilemap.markWallsAsNonTraversable();
-    tilemap.createAdjacencyList();
+    tilemap.createAdjacencyRecord(); 
 
     //starting position
-    Vector2 characterPosition{ 1, 1 }; 
+    Vector2 characterPosition{ 1, 1 };
 
-    SetTargetFPS(8); 
+    SetTargetFPS(8);
 
     while (!WindowShouldClose())
     {
-        
+
         Vector2 newPosition = characterPosition;
 
         if (IsKeyDown(KEY_W) && tilemap.isTileTraversable(characterPosition.x, characterPosition.y - 1))
